@@ -1,0 +1,27 @@
+id: ServiceAccountGet
+version: '1.0'
+specVersion: '0.8'
+name: Get GCP Service Account
+functions:
+  - name: getServiceAccount
+    operation: specs/gcp_service_account.yml#getServiceAccount
+
+start: StartState
+errors:
+  - name: not found
+    code: HTTP:404
+states:
+  - name: StartState
+    type: operation
+    actions:
+      - name: getServiceAccount
+        functionRef:
+          refName: getServiceAccount
+          arguments:
+            projectId: "$SECRET.gcp_project_id"
+            serviceAccountId: ".serviceAccountId"
+    onErrors:
+      - errorRef: not found
+        end: true
+    end:
+      terminate: true

@@ -31,3 +31,6 @@ buildNumber.properties
 .checkstyle
 
 *.log
+
+#Quarkus prod config
+src/main/resources/application-prod.properties

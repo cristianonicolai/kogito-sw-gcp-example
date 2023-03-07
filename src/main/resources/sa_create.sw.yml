@@ -1,0 +1,21 @@
+id: ServiceAccountCreate
+version: '1.0'
+specVersion: '0.8'
+name: Create GCP Service Account
+functions:
+  - name: createServiceAccount
+    operation: specs/gcp_service_account.yml#createServiceAccount
+
+start: StartState
+states:
+  - name: StartState
+    type: operation
+    actions:
+      - name: createServiceAccount
+        functionRef:
+          refName: createServiceAccount
+          arguments:
+            projectId: "$SECRET.gcp_project_id"
+            accountId: "kogito-sw-gcp"
+    end:
+      terminate: true

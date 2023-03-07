@@ -1,0 +1,21 @@
+id: ServiceAccountDelete
+version: '1.0'
+specVersion: '0.8'
+name: Delete GCP Service Account
+functions:
+  - name: deleteServiceAccount
+    operation: specs/gcp_service_account.yml#deleteServiceAccount
+
+start: StartState
+states:
+  - name: StartState
+    type: operation
+    actions:
+      - name: deleteServiceAccount
+        functionRef:
+          refName: deleteServiceAccount
+          arguments:
+            projectId: "$SECRET.gcp_project_id"
+            serviceAccountId: ".serviceAccountId"
+    end:
+      terminate: true
