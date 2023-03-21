@@ -1,0 +1,22 @@
+id: ComputeInstanceDelete
+version: '1.0'
+specVersion: '0.8'
+name: Delete GCP Compute Instance
+functions:
+  - name: deleteComputeInstance
+    operation: specs/gcp_compute_instance.yml#deleteComputeInstance
+
+start: StartState
+states:
+  - name: StartState
+    type: operation
+    actions:
+      - name: deleteComputeInstance
+        functionRef:
+          refName: deleteComputeInstance
+          arguments:
+            projectId: $SECRET.gcp_project_id
+            zone: $SECRET.gcp_zone
+            name: kogito-sw-gcp
+    end:
+      terminate: true

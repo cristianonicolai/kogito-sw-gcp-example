@@ -1,0 +1,27 @@
+id: ComputeInstanceGet
+version: '1.0'
+specVersion: '0.8'
+name: Get GCP Compute Instance
+functions:
+  - name: getComputeInstance
+    operation: specs/gcp_compute_instance.yml#getComputeInstance
+errors:
+  - name: not found
+    code: HTTP:404
+start: StartState
+states:
+  - name: StartState
+    type: operation
+    actions:
+      - name: getComputeInstance
+        functionRef:
+          refName: getComputeInstance
+          arguments:
+            projectId: $SECRET.gcp_project_id
+            zone: $SECRET.gcp_zone
+            name: kogito-sw-gcp
+    onErrors:
+      - errorRef: not found
+        end: true
+    end:
+      terminate: true
